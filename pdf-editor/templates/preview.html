@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Preview PDF</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-700">PDF Preview</h1>
+    <button id="finalizeBtn" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Generate Final PDF</button>
+</div>
+
+<!-- Insert PDF Form -->
+<div class="mb-6 p-4 bg-white rounded shadow">
+    <form id="insertPdfForm" enctype="multipart/form-data">
+        <label class="block mb-2 font-semibold">Insert another PDF at position:</label>
+        <input type="number" name="position" min="0" max="{{ previews|length }}" value="0" class="border rounded px-2 py-1 mr-2">
+        <input type="file" name="file" accept="application/pdf" class="border rounded px-2 py-1 mr-2">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Insert PDF</button>
+    </form>
+</div>
+
+<div id="previewContainer" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    {% for page in previews %}
+    <div class="bg-white rounded-xl shadow p-3 flex flex-col items-center space-y-2 draggable" data-page="{{ loop.index0 }}">
+        <img src="{{ url_for('static', filename=page) }}" class="rounded-lg border h-56 object-contain">
+        <button class="removeBtn text-red-500 font-semibold" data-page="{{ loop.index0 }}">Remove</button>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    window.PDF_ID = "{{ pdf_id }}";
+</script>
+<script src="{{ url_for('static', filename='js/preview.js') }}"></script>
+</body>
+</html>
+
